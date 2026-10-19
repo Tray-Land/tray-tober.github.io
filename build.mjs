@@ -1,0 +1,178 @@
+// Generates the static Tray-tober site.
+//
+//   node build.mjs <path to traytober.json>   sync released apps from the tracker, then build
+//   node build.mjs                            rebuild from data/apps.json
+//
+// Only apps whose day has arrived (PlannedDate <= today, America/Chicago) are
+// copied into the repo, so unreleased apps never reach GitHub.
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, rmSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = dirname(fileURLToPath(import.meta.url));
+const dataFile = join(root, 'data', 'apps.json');
+const YEAR = 2026;
+const MONTH = 10;
+
+const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
+const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+// ---- sync ---------------------------------------------------------------
+const source = process.argv[2];
+if (source) {
+  const tracker = JSON.parse(readFileSync(source, 'utf8'));
+  rmSync(join(root, 'assets', 'icons'), { recursive: true, force: true });
+  mkdirSync(join(root, 'assets', 'icons'), { recursive: true });
+  const apps = tracker.Apps
+    .filter((a) => a.PlannedDate && !a.IsDropped && a.PlannedDate <= today)
+    .sort((a, b) => a.PlannedDate.localeCompare(b.PlannedDate))
+    .map((a) => {
+      const slug = slugify(a.Name);
+      const hasIcon = a.IconPath && existsSync(a.IconPath);
+      if (hasIcon) copyFileSync(a.IconPath, join(root, 'assets', 'icons', `${slug}.png`));
+      const isPublic = a.RepoVisibility === 'PUBLIC' && a.RepoUrl;
+      return {
+        day: Number(a.PlannedDate.slice(8)),
+        date: a.PlannedDate,
+        name: a.Name,
+        slug,
+        idea: a.Idea,
+        icon: hasIcon,
+        repoUrl: isPublic ? a.RepoUrl : '',
+        releaseTag: a.LatestReleaseTag || '',
+        blogUrl: a.BlogPostUrl || '',
+        storeUrl: a.StoreUrl || '',
+        blueskyUrl: a.BlueskyPostUrl || '',
+        hours: a.HoursSpent || 0,
+      };
+    });
+  mkdirSync(join(root, 'data'), { recursive: true });
+  writeFileSync(dataFile, JSON.stringify({ year: YEAR, apps }, null, 2) + '\n');
+  console.log(`Synced ${apps.length} released apps (through ${today}).`);
+}
+
+// ---- build --------------------------------------------------------------
+// Re-filter on build too, so a rebuild on a later/earlier date stays correct.
+const apps = JSON.parse(readFileSync(dataFile, 'utf8')).apps.filter((a) => a.date <= today);
+const byDay = new Map(apps.map((a) => [a.day, a]));
+const monthName = new Date(Date.UTC(YEAR, MONTH - 1, 1)).toLocaleString('en-US', { month: 'long', timeZone: 'UTC' });
+const daysInMonth = new Date(Date.UTC(YEAR, MONTH, 0)).getUTCDate();
+const lead = (new Date(Date.UTC(YEAR, MONTH - 1, 1)).getUTCDay() + 6) % 7; // Monday-first
+const todayDay = today.startsWith(`${YEAR}-${MONTH}`) ? Number(today.slice(8)) : 0;
+
+const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎃</text></svg>')}`;
+
+function page({ title, description, base, body }) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}">
+<meta name="theme-color" content="#552575">
+<link rel="icon" href="${favicon}">
+<link rel="stylesheet" href="${base}assets/style.css">
+</head>
+<body>
+${body}
+<footer class="foot">
+  <p>Tray-tober ${YEAR} · a tray app a day all October · by <a href="https://github.com/TheJoeFin">Joe Finney</a></p>
+</footer>
+</body>
+</html>
+`;
+}
+
+const iconImg = (a, base, cls) =>
+  a.icon
+    ? `<img class="${cls}" src="${base}assets/icons/${a.slug}.png" alt="" loading="lazy">`
+    : `<span class="${cls} noicon" aria-hidden="true">🎃</span>`;
+
+// Main calendar page
+const cells = [];
+for (let i = 0; i < lead; i++) cells.push('<li class="pad" aria-hidden="true"></li>');
+for (let d = 1; d <= daysInMonth; d++) {
+  const a = byDay.get(d);
+  if (a) {
+    cells.push(`<li class="door open${d === todayDay ? ' today' : ''}">
+  <a href="apps/${a.slug}/">
+    <span class="num">${d}</span>${d === todayDay ? '<span class="badge">Today</span>' : ''}
+    ${iconImg(a, '', 'icon')}
+    <span class="name">${esc(a.name)}</span>
+  </a>
+</li>`);
+  } else {
+    cells.push(`<li class="door locked" title="Opens October ${d}">
+  <span class="num">${d}</span>
+  <span class="lock" aria-hidden="true">🔒</span>
+  <span class="sr">Day ${d} is still locked</span>
+</li>`);
+  }
+}
+
+const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
+const home = page({
+  title: `Tray-tober ${YEAR}`,
+  description: 'A tray app a day all October. Open a door to meet each day’s app.',
+  base: '',
+  body: `<header class="hero">
+  <img src="assets/hero.svg" alt="Tray-tober: a tray app a day all October">
+</header>
+<main class="wrap">
+  <div class="cal-head">
+    <h1>${monthName} ${YEAR}</h1>
+    <p class="count"><strong>${apps.length}</strong> of ${daysInMonth} doors open</p>
+  </div>
+  <ol class="dow" aria-hidden="true">${dow}</ol>
+  <ol class="grid">
+${cells.join('\n')}
+  </ol>
+  <p class="hint">A new door opens every day. Come back tomorrow 🕯️</p>
+</main>`,
+});
+writeFileSync(join(root, 'index.html'), home);
+
+// Detail pages
+const fmtDate = (iso) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+for (const a of apps) {
+  const links = [];
+  if (a.storeUrl) links.push(`<a class="btn primary" href="${esc(a.storeUrl)}">Get it in the Store</a>`);
+  if (a.repoUrl && a.releaseTag) links.push(`<a class="btn primary" href="${esc(a.repoUrl)}/releases/latest">Download ${esc(a.releaseTag)}</a>`);
+  if (a.repoUrl) links.push(`<a class="btn" href="${esc(a.repoUrl)}">Source on GitHub</a>`);
+  if (a.blogUrl) links.push(`<a class="btn" href="${esc(a.blogUrl)}">Read the blog post</a>`);
+  if (a.blueskyUrl) links.push(`<a class="btn" href="${esc(a.blueskyUrl)}">Bluesky post</a>`);
+
+  const facts = [`<div><dt>Door</dt><dd>${a.day} of ${daysInMonth}</dd></div>`, `<div><dt>Released</dt><dd>${fmtDate(a.date)}</dd></div>`];
+  if (a.releaseTag) facts.push(`<div><dt>Version</dt><dd>${esc(a.releaseTag)}</dd></div>`);
+  if (a.hours) facts.push(`<div><dt>Built in</dt><dd>${a.hours} hours</dd></div>`);
+
+  const prev = byDay.get(a.day - 1);
+  const next = byDay.get(a.day + 1);
+  const nav = (x, dir, label) =>
+    x ? `<a class="${dir}" href="../${x.slug}/"><span>${label}</span><strong>${esc(x.name)}</strong></a>` : `<span class="${dir} off"></span>`;
+
+  const html = page({
+    title: `${a.name} · Tray-tober ${YEAR}`,
+    description: a.idea,
+    base: '../../',
+    body: `<main class="wrap detail">
+  <a class="back" href="../../">← Back to the calendar</a>
+  <article class="card">
+    <div class="doorplate">Door ${a.day}</div>
+    ${iconImg(a, '../../', 'big-icon')}
+    <h1>${esc(a.name)}</h1>
+    <p class="idea">${esc(a.idea)}</p>
+    ${links.length ? `<div class="links">${links.join('\n')}</div>` : ''}
+    <dl class="facts">${facts.join('')}</dl>
+  </article>
+  <nav class="pager">${nav(prev, 'prev', '← Day ' + (a.day - 1))}${nav(next, 'next', 'Day ' + (a.day + 1) + ' →')}</nav>
+</main>`,
+  });
+  mkdirSync(join(root, 'apps', a.slug), { recursive: true });
+  writeFileSync(join(root, 'apps', a.slug, 'index.html'), html);
+}
+console.log(`Built index + ${apps.length} detail pages (today: ${today}).`);

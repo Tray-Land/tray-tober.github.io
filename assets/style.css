@@ -1,0 +1,134 @@
+:root {
+  --purple: #552575;
+  --purple-deep: #2c1240;
+  --purple-mid: #3d1a57;
+  --purple-lift: #6b3590;
+  --orange: #f34f2e;
+  --green: #aec64b;
+  --ink: #fff4ea;
+  --muted: #c9b3dc;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--purple) radial-gradient(ellipse at 50% 0%, var(--purple-lift), var(--purple) 55%, var(--purple-deep)) fixed;
+}
+
+a { color: var(--green); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px 32px; }
+
+/* Hero */
+.hero { background: var(--purple); text-align: center; overflow: hidden; }
+.hero img { display: block; width: 100%; max-width: 1024px; max-height: 60vh; object-fit: contain; margin: 0 auto; }
+
+/* Calendar header */
+.cal-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin: 28px 0 12px; }
+.cal-head h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange); }
+.count { margin: 0; color: var(--muted); }
+.count strong { color: var(--green); }
+
+.dow, .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+.dow { margin-bottom: 8px; color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; }
+.dow li { padding-left: 4px; }
+
+/* Doors */
+.door { position: relative; aspect-ratio: 1 / 1.05; border-radius: var(--radius); overflow: hidden; }
+.num {
+  position: absolute; top: 8px; left: 10px; z-index: 1;
+  font-weight: 700; font-size: 1.05rem;
+}
+
+.door.open { background: var(--purple-mid); border: 2px solid var(--purple-lift); box-shadow: inset 0 -4px 0 var(--green); transition: transform .15s, box-shadow .15s; }
+.door.open a {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 28px 8px 10px; color: var(--ink); text-decoration: none; text-align: center;
+}
+.door.open:hover, .door.open:focus-within { transform: translateY(-3px) rotate(-.6deg); box-shadow: inset 0 -4px 0 var(--green), 0 8px 18px rgba(0, 0, 0, .4); border-color: var(--orange); }
+.door.open .num { color: var(--orange); }
+.icon, .big-icon { object-fit: contain; border-radius: 18%; }
+.icon { width: 52%; max-height: 52%; }
+.noicon { display: grid; place-items: center; font-size: 2.2rem; }
+.name { font-weight: 600; font-size: .95rem; line-height: 1.15; overflow-wrap: anywhere; }
+
+.door.today { border-color: var(--green); animation: glow 2.4s ease-in-out infinite; }
+.badge {
+  position: absolute; top: 8px; right: 8px; z-index: 1; padding: 2px 8px; border-radius: 99px;
+  background: var(--green); color: var(--purple-deep); font-size: .7rem; font-weight: 700; text-transform: uppercase;
+}
+@keyframes glow { 50% { box-shadow: inset 0 -4px 0 var(--green), 0 0 22px rgba(174, 198, 75, .55); } }
+
+/* Locked doors */
+.door.locked {
+  background: linear-gradient(160deg, var(--purple-mid), var(--purple-deep));
+  border: 2px solid rgba(255, 255, 255, .06);
+  display: grid; place-items: center; color: var(--muted);
+}
+.door.locked::after { /* door knob */
+  content: ""; position: absolute; right: 12px; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--orange); opacity: .55;
+}
+.door.locked .num { color: var(--muted); }
+.lock { font-size: 1.6rem; opacity: .55; }
+
+.hint { text-align: center; color: var(--muted); margin-top: 24px; }
+
+/* Detail page */
+.detail { max-width: 720px; padding-top: 20px; }
+.back { display: inline-block; margin-bottom: 16px; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.card {
+  position: relative; text-align: center; padding: 56px 24px 28px; border-radius: 20px;
+  background: var(--purple-mid); border: 2px solid var(--purple-lift); box-shadow: inset 0 -6px 0 var(--green), 0 12px 30px rgba(0, 0, 0, .35);
+}
+.doorplate {
+  position: absolute; top: -2px; left: 50%; transform: translateX(-50%); padding: 6px 20px; border-radius: 0 0 12px 12px;
+  background: var(--orange); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem;
+}
+.big-icon { width: 128px; height: 128px; margin-bottom: 8px; }
+.card h1 { margin: 8px 0; font-size: clamp(1.8rem, 6vw, 2.6rem); color: var(--orange); }
+.idea { font-size: 1.15rem; line-height: 1.5; max-width: 34em; margin: 0 auto 22px; }
+.links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 24px; }
+.btn {
+  padding: 10px 18px; border-radius: 99px; border: 2px solid var(--green); color: var(--green); text-decoration: none; font-weight: 600;
+}
+.btn:hover, .btn:focus-visible { background: var(--green); color: var(--purple-deep); }
+.btn.primary { background: var(--orange); border-color: var(--orange); color: #fff; }
+.btn.primary:hover, .btn.primary:focus-visible { background: #ff6a4a; border-color: #ff6a4a; color: #fff; }
+
+.facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 32px; margin: 0; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, .2); }
+.facts dt { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+.facts dd { margin: 2px 0 0; font-weight: 600; }
+
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; }
+.pager a, .pager .off { flex: 1; }
+.pager a { display: flex; flex-direction: column; padding: 12px 16px; border-radius: var(--radius); background: var(--purple-mid); color: var(--ink); text-decoration: none; border: 2px solid var(--purple-lift); }
+.pager a:hover { border-color: var(--orange); }
+.pager span { color: var(--muted); font-size: .8rem; }
+.pager .next { text-align: right; }
+
+.foot { text-align: center; color: var(--muted); font-size: .85rem; padding: 8px 16px 32px; }
+
+/* Phones: drop the weekday grid, show doors in a flowing grid */
+@media (max-width: 700px) {
+  .dow, .pad { display: none; }
+  .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .name { font-size: .8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .door.today { animation: none; }
+  .door.open { transition: none; }
+}
+
+/* Fade the hero's edges into the page */
+.hero img {
+  max-height: 46vh;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
