@@ -129,3 +129,10 @@ a { color: var(--green); }
   .door.open { transition: none; }
 }
 
+
+/* GitHub link on each open door */
+.gh { position: absolute; right: 6px; bottom: 8px; z-index: 2; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--muted); background: rgba(0, 0, 0, .25); }
+.gh:hover, .gh:focus-visible { color: var(--purple-deep); background: var(--green); }
+.door.open a.gh { inset: auto 6px 8px auto; padding: 0; flex-direction: row; gap: 0; }
+.door.open a.gh { inset: 6px 6px auto auto; width: 26px; height: 26px; }
+.door.today .badge { right: 38px; top: 9px; }

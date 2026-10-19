@@ -31,7 +31,6 @@ if (source) {
       const slug = slugify(a.Name);
       const hasIcon = a.IconPath && existsSync(a.IconPath);
       if (hasIcon) copyFileSync(a.IconPath, join(root, 'assets', 'icons', `${slug}.png`));
-      const isPublic = a.RepoVisibility === 'PUBLIC' && a.RepoUrl;
       return {
         day: Number(a.PlannedDate.slice(8)),
         date: a.PlannedDate,
@@ -39,7 +38,7 @@ if (source) {
         slug,
         idea: a.Idea,
         icon: hasIcon,
-        repoUrl: isPublic ? a.RepoUrl : '',
+        repoUrl: a.RepoUrl || '',
         releaseTag: a.LatestReleaseTag || '',
         blogUrl: a.BlogPostUrl || '',
         storeUrl: a.StoreUrl || '',
@@ -90,6 +89,8 @@ const iconImg = (a, base, cls) =>
     ? `<img class="${cls}" src="${base}assets/icons/${a.slug}.png" alt="" loading="lazy">`
     : `<span class="${cls} noicon" aria-hidden="true">🎃</span>`;
 
+const ghIcon = '<svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+
 // Main calendar page
 const cells = [];
 for (let i = 0; i < lead; i++) cells.push('<li class="pad" aria-hidden="true"></li>');
@@ -102,6 +103,7 @@ for (let d = 1; d <= daysInMonth; d++) {
     ${iconImg(a, '', 'icon')}
     <span class="name">${esc(a.name)}</span>
   </a>
+  ${a.repoUrl ? `<a class="gh" href="${esc(a.repoUrl)}" title="${esc(a.name)} on GitHub" aria-label="${esc(a.name)} on GitHub">${ghIcon}</a>` : ''}
 </li>`);
   } else {
     cells.push(`<li class="door locked" title="Opens October ${d}">
@@ -116,7 +118,7 @@ for (let d = 1; d <= daysInMonth; d++) {
 const withIcons = apps.filter((a) => a.icon && a.slug !== 'traysky'); // traysky's icon is opaque, so it can't be silhouetted
 const patternIcons = Array.from({ length: 150 }, (_, i) => `<img src="assets/icons/${withIcons[(i * 7 + (i >> 3) * 5) % withIcons.length].slug}.png" alt="">`).join('');
 
-const dow =['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
+const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
 const home = page({
   title: `Tray-tober ${YEAR}`,
   description: 'A tray app a day all October. Open a door to meet each day’s app.',
