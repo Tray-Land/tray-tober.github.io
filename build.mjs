@@ -141,6 +141,22 @@ ${cells.join('\n')}
 });
 writeFileSync(join(root, 'index.html'), home);
 
+// Companion projects shown on an app's detail page, keyed by slug
+const related = {
+  trayqr: [{
+    title: 'Also on the Mac: QRBar',
+    blurb: 'QRBar is a native macOS port of Tray QR. Click the menu bar icon, type or paste some text, and the QR code appears. Point it at a code on screen or in an image to read it.',
+    points: [
+      'Create: live preview, custom colors with a low-contrast warning, error-correction levels L/M/Q/H, copy, save as PNG, or drag the image out',
+      'Read: select part of the screen, or paste, open or drop an image. Reads QR, Micro QR, Data Matrix, Aztec, PDF417, EAN-13, UPC-E and Code 128',
+      'Menu bar only, works offline, optional launch at login',
+    ],
+    requires: 'Requires macOS 15 Sequoia or later.',
+    url: 'https://github.com/Tray-Land/QRBar',
+    cta: 'QRBar on GitHub',
+  }],
+};
+
 // Detail pages
 const fmtDate = (iso) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -176,6 +192,13 @@ for (const a of apps) {
     ${links.length ? `<div class="links">${links.join('\n')}</div>` : ''}
     <dl class="facts">${facts.join('')}</dl>
   </article>
+  ${(related[a.slug] ?? []).map((r) => `<aside class="related">
+    <h2>${esc(r.title)}</h2>
+    <p>${esc(r.blurb)}</p>
+    <ul>${r.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+    <p class="meta">${esc(r.requires)}</p>
+    <a class="btn" href="${esc(r.url)}">${esc(r.cta)}</a>
+  </aside>`).join('\n')}
   <nav class="pager">${nav(prev, 'prev', '← Day ' + (a.day - 1))}${nav(next, 'next', 'Day ' + (a.day + 1) + ' →')}</nav>
 </main>`,
   });

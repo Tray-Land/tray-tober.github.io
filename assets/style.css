@@ -136,3 +136,10 @@ a { color: var(--green); }
 .door.open a.gh { inset: auto 6px 8px auto; padding: 0; flex-direction: row; gap: 0; }
 .door.open a.gh { inset: 6px 6px auto auto; width: 26px; height: 26px; }
 .door.today .badge { right: 38px; top: 9px; }
+
+/* Companion project on a detail page */
+.related { margin-top: 20px; padding: 22px 24px; border-radius: 20px; background: var(--purple-mid); border: 2px solid var(--purple-lift); }
+.related h2 { margin: 0 0 8px; color: var(--green); font-size: 1.3rem; }
+.related p { line-height: 1.5; margin: 0 0 12px; }
+.related ul { margin: 0 0 12px; padding-left: 1.2em; line-height: 1.5; }
+.related .meta { color: var(--muted); font-size: .9rem; }
