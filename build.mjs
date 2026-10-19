@@ -73,6 +73,8 @@ function page({ title, description, base, body }) {
 <meta name="description" content="${esc(description)}">
 <meta name="theme-color" content="#552575">
 <link rel="icon" href="${favicon}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@900&display=swap">
 <link rel="stylesheet" href="${base}assets/style.css">
 </head>
 <body>
@@ -112,13 +114,41 @@ for (let d = 1; d <= daysInMonth; d++) {
   }
 }
 
-const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
+// Faint wall of app icons behind the banner, like the original artwork
+const withIcons = apps.filter((a) => a.icon && a.slug !== 'traysky'); // traysky's icon is opaque, so it can't be silhouetted
+const patternIcons = Array.from({ length: 150 }, (_, i) => `<img src="assets/icons/${withIcons[(i * 7 + (i >> 3) * 5) % withIcons.length].slug}.png" alt="">`).join('');
+
+const dow =['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
 const home = page({
   title: `Tray-tober ${YEAR}`,
   description: 'A tray app a day all October. Open a door to meet each day’s app.',
   base: '',
   body: `<header class="hero">
-  <img src="assets/hero.svg" alt="Tray-tober: a tray app a day all October">
+  <div class="pattern" aria-hidden="true">${patternIcons}</div>
+  <svg class="banner" viewBox="0 0 1024 690" role="img" aria-label="Tray-tober: a tray app a day all October">
+    <defs>
+      <path id="arc-title" d="M50 330 Q 500 40 975 285"/>
+      <path id="arc-sub" d="M230 385 Q 490 300 800 385"/>
+      <radialGradient id="pk" cx="65%" cy="25%" r="85%">
+        <stop offset="0" stop-color="#ffa07a"/><stop offset=".45" stop-color="#ff6a45"/><stop offset="1" stop-color="#f03a1c"/>
+      </radialGradient>
+      <filter id="blur" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
+      <filter id="soft" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+    </defs>
+    <ellipse cx="512" cy="640" rx="210" ry="38" fill="#1a0929" opacity=".6" filter="url(#soft)"/>
+    <text class="t-shadow" filter="url(#blur)" transform="translate(36 64)"><textPath href="#arc-title">Tray-tober</textPath></text>
+    <text class="t-title"><textPath href="#arc-title">Tray-tober</textPath></text>
+    <text class="t-sub"><textPath href="#arc-sub">a tray app a day all October</textPath></text>
+    <g transform="translate(0 75)">
+    <path d="M498 305 L548 280 L554 306 Z" fill="#aec64b"/>
+    <path d="M512 300 C630 290 712 350 716 450 C720 530 645 568 512 568 C379 568 304 530 308 450 C312 350 394 290 512 300 Z" fill="url(#pk)"/>
+    <g fill="#4a2068">
+      <path d="M406 420 L444 402 L444 428 Q 425 420 406 420Z M618 420 L580 402 L580 428 Q 599 420 618 420Z"/>
+      <path d="M392 466 Q 432 458 466 474 Q 488 458 512 472 Q 536 458 558 474 Q 592 458 632 466 Q 636 548 512 554 Q 388 548 392 466 Z"/>
+    </g>
+    <path d="M490 554 Q 512 528 534 554 Z" fill="#f34f2e"/>
+  </g>
+  </svg>
 </header>
 <main class="wrap">
   <div class="cal-head">
