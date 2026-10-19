@@ -252,6 +252,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 19,
+      "date": "2026-10-19",
+      "name": "Trayulator",
+      "slug": "trayulator",
+      "idea": "Calculate numbers, in a tray app, written in Rust!",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/trayulator",
+      "releaseTag": "",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
