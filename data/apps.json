@@ -266,6 +266,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 20,
+      "date": "2026-10-20",
+      "name": "Tray Casts",
+      "slug": "tray-casts",
+      "idea": "Keep your favorite podcasts a click away! Find shows, follow feeds, and pick up where you left off with playback controls right in your tray.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tray-casts",
+      "releaseTag": "v1.0.2",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
