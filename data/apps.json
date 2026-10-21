@@ -280,6 +280,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 21,
+      "date": "2026-10-21",
+      "name": "Tray Random",
+      "slug": "tray-random",
+      "idea": "Roll dice, make up names, emails, addresses and more, all one click away in your tray. Pin your favorites and copy the result in a snap!",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tray-random",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
