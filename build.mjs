@@ -155,6 +155,18 @@ const related = {
     url: 'https://github.com/Tray-Land/QRBar',
     cta: 'QRBar on GitHub',
   }],
+  'tray-git': [{
+    title: 'Also on the Mac: Local Git List',
+    blurb: 'Local Git List is a native macOS port of Tray Git. Click the menu bar icon to find the git repos on your Mac, then open a terminal, Finder or the remote in one click.',
+    points: [
+      'Filter as you type, with keyboard shortcuts to open a terminal, Finder or the remote',
+      'Shows each repo\'s branch, changes against HEAD, and commits to pull or push',
+      'Fetch, favorites, worktrees and recent-first sorting, like Tray Git',
+    ],
+    requires: 'Requires macOS 14 Sonoma or later.',
+    url: 'https://github.com/Tray-Land/local-git-list',
+    cta: 'Local Git List on GitHub',
+  }],
 };
 
 // Detail pages

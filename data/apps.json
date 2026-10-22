@@ -294,6 +294,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 22,
+      "date": "2026-10-22",
+      "name": "Tray Git",
+      "slug": "tray-git",
+      "idea": "Every git repo in your source folder, one click from the taskbar! Open a terminal, open the folder, or jump to the remote, all from your tray.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tray-git",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
