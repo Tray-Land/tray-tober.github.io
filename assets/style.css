@@ -137,6 +137,12 @@ a { color: var(--green); }
 .door.open a.gh { inset: 6px 6px auto auto; width: 26px; height: 26px; }
 .door.today .badge { right: 38px; top: 9px; }
 
+/* Narrow doors have no room for the badge beside the number and GitHub icon: perch it on the top edge instead */
+@media (max-width: 960px) {
+  .door.today { overflow: visible; }
+  .door.today .badge { top: -10px; right: auto; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+}
+
 /* Companion project on a detail page */
 .related { margin-top: 20px; padding: 22px 24px; border-radius: 20px; background: var(--purple-mid); border: 2px solid var(--purple-lift); }
 .related h2 { margin: 0 0 8px; color: var(--green); font-size: 1.3rem; }
