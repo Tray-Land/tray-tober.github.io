@@ -308,6 +308,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 23,
+      "date": "2026-10-23",
+      "name": "MiniInk",
+      "slug": "mini-ink",
+      "idea": "A quick sketch with the pen can help form a thought like nothing else. MiniInk is a stack of sticky notes in your tray that you can draw on and pop out, to externalize your thinking.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/mini-ink",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
