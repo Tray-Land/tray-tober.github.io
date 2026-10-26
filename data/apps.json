@@ -322,6 +322,34 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 24,
+      "date": "2026-10-24",
+      "name": "TinySolitaire",
+      "slug": "tinysolitaire",
+      "idea": "The most classic single player card game, now in your tray.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tiny-solitaire",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
+    },
+    {
+      "day": 25,
+      "date": "2026-10-25",
+      "name": "Tiny ATC",
+      "slug": "tiny-atc",
+      "idea": "A tiny air traffic controller in your tray to see realtime flights overhead, even scrolling details in your tray!",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tiny-atc",
+      "releaseTag": "",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
