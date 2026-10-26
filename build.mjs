@@ -167,6 +167,18 @@ const related = {
     url: 'https://github.com/Tray-Land/local-git-list',
     cta: 'Local Git List on GitHub',
   }],
+  'tiny-atc': [{
+    title: 'Also on the water: Tiny Marine Traffic',
+    blurb: 'Tiny Marine Traffic is a sibling to Tiny ATC for ships. A small window onto your favorite waterway, right in the Windows notification area, with real vessel reports from Open Waters AIS.',
+    points: [
+      'Native harbor map with ship silhouettes that follow reported heading or course, moving ships only by default',
+      'Select a ship for name, MMSI, type, speed, course, status, destination and report age',
+      'Save your own areas, from Oslofjord to San Francisco Bay, and set a home. No account or API key',
+    ],
+    requires: 'Requires Windows 10 1809 or later, x64 or ARM64. Not for navigation. No release published yet.',
+    url: 'https://github.com/Tray-Land/tiny-marine-traffic',
+    cta: 'Tiny Marine Traffic on GitHub',
+  }],
 };
 
 // Detail pages
