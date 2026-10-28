@@ -378,6 +378,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 28,
+      "date": "2026-10-28",
+      "name": "Traycer",
+      "slug": "traycer",
+      "idea": "Glance at the tray to see how your 3D prints are going, and whether anything has finished.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/traycer",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
