@@ -392,6 +392,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 29,
+      "date": "2026-10-29",
+      "name": "Tray Traffic",
+      "slug": "tray-traffic",
+      "idea": "Live traffic and the quickest drive between home, work, and school, one click from the Windows tray.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/tray-traffic",
+      "releaseTag": "v1.0.0",
+      "blogUrl": "",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
