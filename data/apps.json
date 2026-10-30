@@ -406,6 +406,20 @@
       "storeUrl": "",
       "blueskyUrl": "",
       "hours": 0
+    },
+    {
+      "day": 30,
+      "date": "2026-10-30",
+      "name": "Tray Times",
+      "slug": "tray-times",
+      "idea": "A departures board and a suggested trip for the bus or train, one click from the Windows tray. Powered by Transit, anywhere it has data.",
+      "icon": true,
+      "repoUrl": "https://github.com/Tray-Land/TrayTimes",
+      "releaseTag": "v2.1.0",
+      "blogUrl": "https://joefinapps.com/2026/10/30/tray-tober-day-30-tray-times/",
+      "storeUrl": "",
+      "blueskyUrl": "",
+      "hours": 0
     }
   ]
 }
